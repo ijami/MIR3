@@ -33,7 +33,7 @@ public class Parser {
 
 	public Parser(String url) {
 		this.url = url;
-		String [] tmp = url.split("\\/");
+		String[] tmp = url.split("\\/");
 		this.baseUrl = tmp[0] + "//" + tmp[2] + "/";
 	}
 
@@ -63,9 +63,9 @@ public class Parser {
 			response = httpClient.execute(httpGet);
 			Scanner inp = new Scanner(response.getEntity().getContent());
 			String content = inp.nextLine();
-			citedInJsonArray = new JsonParser().parse(content).getAsJsonObject().
-					getAsJsonObject("result").getAsJsonObject("data").getAsJsonArray("citationItems");
-	
+			citedInJsonArray = new JsonParser().parse(content)
+					.getAsJsonObject().getAsJsonObject("result")
+					.getAsJsonObject("data").getAsJsonArray("citationItems");
 
 		} catch (UnsupportedOperationException e) {
 			e.printStackTrace();
@@ -100,9 +100,9 @@ public class Parser {
 			response = httpClient.execute(httpGet);
 			Scanner inp = new Scanner(response.getEntity().getContent());
 			String content = inp.nextLine();
-			refrenceJsonArray = new JsonParser().parse(content).getAsJsonObject().
-					getAsJsonObject("result").getAsJsonObject("data").getAsJsonArray("citationItems");
-		
+			refrenceJsonArray = new JsonParser().parse(content)
+					.getAsJsonObject().getAsJsonObject("result")
+					.getAsJsonObject("data").getAsJsonArray("citationItems");
 
 		} catch (UnsupportedOperationException e) {
 			e.printStackTrace();
@@ -113,48 +113,80 @@ public class Parser {
 
 	public Long[] parsCitedInIDs() {
 		int size = citedInJsonArray.size();
-		Long[] ans = new Long[size];
+		Long[] tmp = new Long[size];
 		int i = 0;
 		for (JsonElement jsonElement : citedInJsonArray) {
-			Long id = jsonElement.getAsJsonObject().getAsJsonObject("data").get("publicationUid").getAsLong();
-			ans[i] = id;
-			i ++;
+			if (jsonElement.getAsJsonObject().getAsJsonObject("data")
+					.has("url")) {
+				Long id = jsonElement.getAsJsonObject().getAsJsonObject("data")
+						.get("publicationUid").getAsLong();
+				tmp[i] = id;
+				i++;
+			}
+		}
+		Long[] ans = new Long[i];
+		for (int j = 0; j < i; j++) {
+			ans[j] = tmp[j];
 		}
 		return ans;
 	}
-	
+
 	public String[] parsCitedInUrls() {
 		int size = citedInJsonArray.size();
-		String[] ans = new String[size];
+		String[] tmp = new String[size];
 		int i = 0;
 		for (JsonElement jsonElement : citedInJsonArray) {
-			String url = jsonElement.getAsJsonObject().getAsJsonObject("data").get("url").getAsString();
-			ans[i] = baseUrl + url;
-			i ++;
+			if (jsonElement.getAsJsonObject().getAsJsonObject("data")
+					.has("url")) {
+				String url = jsonElement.getAsJsonObject()
+						.getAsJsonObject("data").get("url").getAsString();
+				tmp[i] = baseUrl + url;
+				i++;
+			}
+		}
+		String[] ans = new String[i];
+		for (int j = 0; j < i; j++) {
+			ans[j] = tmp[j];
 		}
 		return ans;
 	}
-	
+
 	public Long[] parsRefrenceIDs() {
 		int size = refrenceJsonArray.size();
-		Long[] ans = new Long[size];
+		Long[] tmp = new Long[size];
 		int i = 0;
 		for (JsonElement jsonElement : refrenceJsonArray) {
-			Long id = jsonElement.getAsJsonObject().getAsJsonObject("data").get("publicationUid").getAsLong();
-			ans[i] = id;
-			i ++;
+			if (jsonElement.getAsJsonObject().getAsJsonObject("data")
+					.has("url")) {
+				Long id = jsonElement.getAsJsonObject().getAsJsonObject("data")
+						.get("publicationUid").getAsLong();
+				tmp[i] = id;
+				i++;
+			}
+		}
+		Long[] ans = new Long[i];
+		for (int j = 0; j < i; j++) {
+			ans[j] = tmp[j];
 		}
 		return ans;
 	}
-	
+
 	public String[] parsRefrenceUrls() {
 		int size = refrenceJsonArray.size();
-		String[] ans = new String[size];
+		String[] tmp = new String[size];
 		int i = 0;
 		for (JsonElement jsonElement : refrenceJsonArray) {
-			String url = jsonElement.getAsJsonObject().getAsJsonObject("data").get("url").getAsString();
-			ans[i] = baseUrl + url;
-			i ++;
+			if (jsonElement.getAsJsonObject().getAsJsonObject("data")
+					.has("url")) {
+				String url = jsonElement.getAsJsonObject()
+						.getAsJsonObject("data").get("url").getAsString();
+				tmp[i] = baseUrl + url;
+				i++;
+			}
+		}
+		String[] ans = new String[i];
+		for (int j = 0; j < i; j++) {
+			ans[j] = tmp[j];
 		}
 		return ans;
 	}
@@ -186,11 +218,19 @@ public class Parser {
 
 	private String parsAbstract() {
 		Elements abstract_element = doc.getElementsByClass("pub-abstract");
-		return abstract_element.get(0).child(0).child(1).text();
+		if (abstract_element.get(0).child(0).child(0)
+				.hasClass("js-expander-container"))
+			return abstract_element.get(0).child(0).child(0).child(1).text();
+		else
+			return abstract_element.get(0).child(0).child(1).text();
 	}
 
 	private String parsName() {
-		Elements titles = doc.getElementsByClass("pub-title");
+		Elements titles = null;
+		if (doc.getElementsByClass("pub-title").size() > 0)
+			titles = doc.getElementsByClass("pub-title");
+		if (doc.getElementsByClass("publication-title").size() > 0)
+			titles = doc.getElementsByClass("publication-title");
 		return titles.get(0).text();
 	}
 

@@ -3,7 +3,9 @@ package crawler;
 import article.Article;
 
 public class Crawler {
-	private static final int numberOfCrawllingDoc = 11;
+	private static final int numberOfCrawllingDoc = 1000;
+	private static final String ARTICLESPATH = "articles/";
+	
 	private static final String[] startUrls = {
 		"https://www.researchgate.net/publication/"
 		+ "285458515_A_General_Framework_for_Constrained"
@@ -19,24 +21,26 @@ public class Crawler {
 		"https://www.researchgate.net/publication/"
 		+ "273488773_Variational_Infinite_Hidden_Conditional_Random_Fields?ev=auth_pub",
 		"https://www.researchgate.net/publication/"
-		+ "279848500_mcclustext-manual?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "279848498_mcclustext_10tar?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
 		+ "279633530_Subsampling-Based_Approximate_Monte_"
 		+ "Carlo_for_Discrete_Distributions?ev=auth_pub",
 		"https://www.researchgate.net/publication/"
 		+ "279309917_An_Empirical_Study_of_Stochastic_Variational_Algorithms"
 		+ "_for_the_Beta_Bernoulli_Process?ev=auth_pub",
 		"https://www.researchgate.net/publication/"
-		+ "278332447_MCMC_for_Variationally_Sparse_Gaussian_Processes?ev=auth_pub"
+		+ "278332447_MCMC_for_Variationally_Sparse_Gaussian_Processes?ev=auth_pub",
+		"https://www.researchgate.net/publication/"
+		+ "278048012_Neural_Adaptive_Sequential_Monte_Carlo?ev=auth_pub",
+		"https://www.researchgate.net/publication/"
+		+ "277959103_Dropout_as_a_Bayesian_Approximation_Appendix?ev=auth_pub"
 	};
 	
 	private Scheduler scheduler;
 	private int numCrawled;
+	private ArticleStorage storage;
 	
 	public Crawler() {
 		scheduler = new Scheduler();
+		storage = new ArticleStorage(ARTICLESPATH);
 		numCrawled = 0;
 	}
 	
@@ -51,21 +55,22 @@ public class Crawler {
 			Article article = null;
 			try{
 				article = parser.pars();
+				numCrawled ++;
+				storage.saveArticle(article);
+				for (String string : article.getCitedInUrls()) {
+					scheduler.addUrl(string);
+				}
+				for (String string : article.getRefrenceUrls()) {
+					scheduler.addUrl(string);
+				}
+				System.err.println("Article " + numCrawled + " crawled!");
+				System.err.println(article);
 			}catch(Exception e){
 				System.err.println("*************************************************error accured***************************************");
+				System.err.println("url is " + url);
 				e.printStackTrace();
 				num_error ++;
-				continue;
 			}
-			numCrawled ++;
-			for (String string : article.getCitedInUrls()) {
-				scheduler.addUrl(string);
-			}
-			for (String string : article.getRefrenceUrls()) {
-				scheduler.addUrl(string);
-			}
-			System.err.println("Article " + numCrawled + " crawled!");
-			System.err.println(article);
 		}
 		System.out.println("Crawling ends successfully with " + num_error + " errors. " + numCrawled + " article was crawled! :)");
 	}
