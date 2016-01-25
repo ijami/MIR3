@@ -8,11 +8,9 @@ public class UI {
 
 	public static void main(String[] args) {
 		if(DEBUG){
-			;
 		}else{
 			Crawler crawler = new Crawler();
 			crawler.crawl();
 		}
 	}
-
 }

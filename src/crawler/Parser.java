@@ -3,10 +3,7 @@ package crawler;
 import java.io.IOException;
 import java.util.Scanner;
 
-import jdk.nashorn.internal.parser.JSONParser;
-
 import org.apache.http.Header;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -16,12 +13,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import article.Article;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import article.Article;
 
 public class Parser {
 
@@ -66,6 +62,7 @@ public class Parser {
 			citedInJsonArray = new JsonParser().parse(content)
 					.getAsJsonObject().getAsJsonObject("result")
 					.getAsJsonObject("data").getAsJsonArray("citationItems");
+			inp.close();
 
 		} catch (UnsupportedOperationException e) {
 			e.printStackTrace();
@@ -103,6 +100,7 @@ public class Parser {
 			refrenceJsonArray = new JsonParser().parse(content)
 					.getAsJsonObject().getAsJsonObject("result")
 					.getAsJsonObject("data").getAsJsonArray("citationItems");
+			inp.close();
 
 		} catch (UnsupportedOperationException e) {
 			e.printStackTrace();

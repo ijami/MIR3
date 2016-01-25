@@ -1,14 +1,10 @@
-package crawler;
+package article;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import com.google.gson.Gson;
-
-import article.Article;
 
 public class ArticleStorage {
 	
@@ -34,8 +30,6 @@ public class ArticleStorage {
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -43,6 +37,10 @@ public class ArticleStorage {
 		Gson gson = new Gson();
 		String serializedArticle = gson.toJson(article);
 		return serializedArticle;
+	}
+	
+	public int numberOfArticles(){
+		return articleFolder.listFiles().length;
 	}
 
 }
