@@ -8,7 +8,7 @@ import article.Article;
 import article.ArticleStorage;
 
 public class Crawler {
-	private static final int numberOfCrawllingDoc = 2000;
+	private static final int numberOfCrawllingDoc = 1000;
 	private static final int numberOfAddedUrl = 10;
 	private static final String ARTICLEFOLDERSPATH = "articles/";
 	private static final String CRAWLLOGPATH = "crawl.log";
