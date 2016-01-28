@@ -1,5 +1,6 @@
 package ui;
 
+import crawler.ArticleCrawler;
 import crawler.Crawler;
 
 public class UI {
@@ -9,7 +10,7 @@ public class UI {
 	public static void main(String[] args) {
 		if(DEBUG){
 		}else{
-			Crawler crawler = new Crawler();
+			Crawler crawler = new ArticleCrawler();
 			crawler.crawl();
 		}
 	}

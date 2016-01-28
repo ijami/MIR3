@@ -19,7 +19,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-public class Parser {
+public class ArticleParser {
 
 	private static final int TIMEOUT = 30000;
 
@@ -27,7 +27,7 @@ public class Parser {
 	String url, baseUrl;
 	JsonArray citedInJsonArray, refrenceJsonArray;
 
-	public Parser(String url) {
+	public ArticleParser(String url) {
 		this.url = url;
 		String[] tmp = url.split("\\/");
 		this.baseUrl = tmp[0] + "//" + tmp[2] + "/";
