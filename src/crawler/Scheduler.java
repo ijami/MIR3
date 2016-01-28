@@ -23,5 +23,9 @@ public class Scheduler {
 	public String nextUrl() {
 		return urlQueue.remove(0);
 	}
+
+	public int size() {
+		return urlQueue.size();
+	}
 	
 }

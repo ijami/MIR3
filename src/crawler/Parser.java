@@ -46,7 +46,7 @@ public class Parser {
 							+ this.parsID()
 							+ "&showCitationsSorter=true&"
 							+ "showAbstract=true&showType=true&showPublicationPreview=true&"
-							+ "swapJournalAndAuthorPositions=false");
+							+ "swapJournalAndAuthorPositions=false&limit=100000");
 			httpGet.setHeaders(headers);
 			httpGet.setHeader("authority", "www.researchgate.net");
 			httpGet.setHeader("accept", "application/json");
@@ -84,7 +84,7 @@ public class Parser {
 							+ this.parsID() + "&showCitationsSorter=true&"
 							+ "showAbstract=true&showType=true&"
 							+ "showPublicationPreview=true&"
-							+ "swapJournalAndAuthorPositions=false");
+							+ "swapJournalAndAuthorPositions=false&limit=100000");
 			httpGet.setHeaders(headers);
 			httpGet.setHeader("authority", "www.researchgate.net");
 			httpGet.setHeader("accept", "application/json");

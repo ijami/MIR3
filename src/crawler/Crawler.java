@@ -3,6 +3,8 @@ package crawler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import article.Article;
 import article.ArticleStorage;
@@ -42,14 +44,17 @@ public class Crawler {
 	};
 	
 	private Scheduler scheduler;
-	private int numCrawled;
 	private ArticleStorage storage;
 	private PrintWriter logWriter;
+	private ExecutorService executor;
+	private int numCrawled = 0;
+	private int num_error = 0;
 	
 	public Crawler() {
 		scheduler = new Scheduler();
 		storage = new ArticleStorage(ARTICLEFOLDERSPATH);
 		numCrawled = 0;
+		executor = Executors.newFixedThreadPool(30);
 		try {
 			logWriter = new PrintWriter(new File(CRAWLLOGPATH));
 		} catch (FileNotFoundException e) {
@@ -59,49 +64,82 @@ public class Crawler {
 	
 	public void crawl(){
 		
-		for (String string : startUrls) 
+		for (String string : startUrls)
 			scheduler.addUrl(string);
-		
-		int num_error = 0;
+		 
 		while(storage.numberOfArticles() < numberOfCrawllingDoc){
-			String url = scheduler.nextUrl();
-			Parser parser = new Parser(url);
-			Article article = null;
-			try{
-				article = parser.pars();
-				numCrawled ++;
-				storage.saveArticle(article);
-				int i = 0;
-				for (String string : article.getCitedInUrls()) {
-					scheduler.addUrl(string);
-					i++;
-					if(i == numberOfAddedUrl)
-						break;
-				}
-				i = 0;
-				for (String string : article.getRefrenceUrls()) {
-					scheduler.addUrl(string);
-					i++;
-					if(i == numberOfAddedUrl)
-						break;
-				}
-				log("Article " + numCrawled + " crawled!");
-				log(article.toString());
-			}catch(Exception e){
-				log("*************************************************error accured***************************************");
-				log("url is " + url);
-				for (StackTraceElement element : e.getStackTrace()) {
-					log(element.toString());
-				}
-				num_error ++;
+			if(scheduler.size() > 0){
+				System.err.println("number of articles = " + storage.numberOfArticles());
+				String url = scheduler.nextUrl();
+				executor.execute(new CrawlWorker(url, this));
 			}
 		}
+		executor.shutdownNow();
 		System.out.println("Crawling ends successfully with " + num_error + " errors. " + numCrawled + " article was crawled! :)");
+	}
+	
+	synchronized public void successfulCrawl(Article article){
+		numCrawled ++;
+		storage.saveArticle(article);
+		int i = 0;
+		for (String string : article.getCitedInUrls()) {
+			scheduler.addUrl(string);
+			i++;
+			if(i == numberOfAddedUrl)
+				break;
+		}
+		i = 0;
+		for (String string : article.getRefrenceUrls()) {
+			scheduler.addUrl(string);
+			i++;
+			if(i == numberOfAddedUrl)
+				break;
+		}
+		log("Article " + numCrawled + " crawled!");
+		log(article.toString());
+	}
+	
+	synchronized public void unsuccessfulCrawl(String url, Exception e){
+		log("*************************************************error accured***************************************");
+		log("url is " + url);
+		for (StackTraceElement element : e.getStackTrace()) {
+			log(element.toString());
+		}
+		num_error ++;
 	}
 	
 	private void log(String log){
 		System.err.println(log);
-		logWriter.println(log);
+		synchronized (logWriter) {			
+			logWriter.println(log);
+		}
+	}
+}
+
+class CrawlWorker implements Runnable{
+	String url;
+	Crawler crawler;
+	
+	public CrawlWorker(String url, Crawler crawler) {
+		this.url = url;
+		this.crawler = crawler;
 	}
 
+	@Override
+	public void run() {
+		Parser parser = new Parser(url);
+		Article article = null;
+		try{
+			article = parser.pars();
+			synchronized (crawler) {				
+				crawler.successfulCrawl(article);
+			}
+			
+		}catch(Exception e){
+			synchronized (crawler) {				
+				crawler.unsuccessfulCrawl(url, e);
+			}
+		}
+		
+	}
 }
