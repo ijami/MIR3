@@ -7,9 +7,11 @@ public class Article {
 	
 	long id;
 	String name;
+	String url;
 	String abstraction;
 	ArrayList<String> authors, citedInUrls, refrenceUrls;
 	ArrayList<Long> citedInIDs, refrenceIDs;
+	double pageRank;
 	
 	public Article() {
 		authors = new ArrayList<String>();
@@ -87,6 +89,36 @@ public class Article {
 
 	public ArrayList<String> getRefrenceUrls() {
 		return refrenceUrls;
+	}
+	
+
+	public ArrayList<Long> getCitedInIDs() {
+		return citedInIDs;
+	}
+
+
+	public ArrayList<Long> getRefrenceIDs() {
+		return refrenceIDs;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	
+
+	public double getPageRank() {
+		return pageRank;
+	}
+
+
+
+	public void setPageRank(double pageRank) {
+		this.pageRank = pageRank;
 	}
 
 
