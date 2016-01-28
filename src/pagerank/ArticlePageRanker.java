@@ -1,7 +1,6 @@
 package pagerank;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import article.Article;
@@ -18,7 +17,6 @@ public class ArticlePageRanker {
 	
 	public void pageRank(double alpha, double threashold){
 		setMapping();
-		int sum = 0;
 		int s = articles.length;
 		double[][] matrix = new double[s][s];
 		for(int i = 0; i < s; i ++){
@@ -29,7 +27,6 @@ public class ArticlePageRanker {
 					int index = map.get(long1);
 					if(index == i)
 						continue;
-					sum ++;
 					matrix[i][index] = 1;
 				}
 			}

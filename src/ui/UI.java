@@ -1,7 +1,6 @@
 package ui;
 
 import pagerank.ArticlePageRanker;
-import pagerank.PageRanker;
 import article.Article;
 import article.ArticleStorage;
 
