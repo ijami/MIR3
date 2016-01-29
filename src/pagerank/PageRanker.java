@@ -34,13 +34,6 @@ public class PageRanker {
 		}
 	}
 	
-	public void normalize(RealMatrix a){
-		double sum = length(a);
-		int s = a.getColumnDimension();
-		for (int i = 0; i < s; i++)
-			a.setEntry(0, i, a.getEntry(0, i)/sum);
-	}
-	
 	public double length(RealMatrix a){
 		double sum = 0;
 		int s = a.getColumnDimension();
