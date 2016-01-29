@@ -3,7 +3,6 @@ package article;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-
 import com.google.gson.Gson;
 
 public class ArticleStorage {
@@ -38,6 +37,7 @@ public class ArticleStorage {
 		String serializedArticle = gson.toJson(article);
 		return serializedArticle;
 	}
+	
 	
 	public int numberOfArticles(){
 		return articleFolder.listFiles().length;
