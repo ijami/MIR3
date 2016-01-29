@@ -9,6 +9,7 @@ public class ArticleStorage {
 	
 	String path;
 	File articleFolder;
+	Article[] articleRepo;
 	
 	public ArticleStorage(String path) {
 		this.path = path;
@@ -37,10 +38,31 @@ public class ArticleStorage {
 		String serializedArticle = gson.toJson(article);
 		return serializedArticle;
 	}
-	
+
+	private Article getArticleFromJson(String json){
+		Gson gson = new Gson();
+		Article article = gson.fromJson(json, Article.class);
+		return article;
+	}
 	
 	public int numberOfArticles(){
 		return articleFolder.listFiles().length;
+	}
+	
+	public Article[] getArticlesFromRepo(){
+		File[] files = articleFolder.listFiles();
+		articleRepo = new Article[files.length];
+		for (int i = 0; i < files.length; i ++) {
+			Scanner inp = null;
+			try {
+				inp = new Scanner(files[i]);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			String json = inp.nextLine();
+			articleRepo[i] = getArticleFromJson(json);
+		}
+		return articleRepo;
 	}
 
 }

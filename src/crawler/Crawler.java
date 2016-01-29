@@ -3,55 +3,34 @@ package crawler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import article.Article;
-import article.ArticleStorage;
 
-public class Crawler {
-	private static final int numberOfCrawllingDoc = 2000;
-	private static final int numberOfAddedUrl = 10;
-	private static final String ARTICLEFOLDERSPATH = "articles/";
-	private static final String CRAWLLOGPATH = "crawl.log";
+public abstract class Crawler {
 	
-	private static final String[] startUrls = {
-		"https://www.researchgate.net/publication/"
-		+ "285458515_A_General_Framework_for_Constrained"
-		+ "_Bayesian_Optimization_using_Information-based_Search?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "284579255_Parallel_Predictive_Entropy_Search_for"
-		+ "_Batch_Global_Optimization_of_Expensive_Objective_Functions?ev=auth_pub", 
-		"https://www.researchgate.net/publication/"
-		+ "283658712_Sandwiching_the_marginal_likelihood_"
-		+ "using_bidirectional_Monte_Carlo?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "281895707_Dirichlet_Fragmentation_Processes?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "273488773_Variational_Infinite_Hidden_Conditional_Random_Fields?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "279633530_Subsampling-Based_Approximate_Monte_"
-		+ "Carlo_for_Discrete_Distributions?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "279309917_An_Empirical_Study_of_Stochastic_Variational_Algorithms"
-		+ "_for_the_Beta_Bernoulli_Process?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "278332447_MCMC_for_Variationally_Sparse_Gaussian_Processes?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "278048012_Neural_Adaptive_Sequential_Monte_Carlo?ev=auth_pub",
-		"https://www.researchgate.net/publication/"
-		+ "277959103_Dropout_as_a_Bayesian_Approximation_Appendix?ev=auth_pub"
-	};
+	private String logPath;
 	
-	private Scheduler scheduler;
-	private int numCrawled;
-	private ArticleStorage storage;
+	protected String[] startUrls;
+	protected int numberOfCrawllingDoc;;
+	protected Scheduler scheduler;
+	
 	private PrintWriter logWriter;
+	private ExecutorService executor;
+	protected int numCrawled = 0;
+	protected int num_error = 0;
 	
-	public Crawler() {
+	
+	public Crawler(int numberOfCrawllingDoc, String logPath) {
 		scheduler = new Scheduler();
-		storage = new ArticleStorage(ARTICLEFOLDERSPATH);
+		this.logPath = logPath;
+		this.numberOfCrawllingDoc = numberOfCrawllingDoc;
+		
 		numCrawled = 0;
+		executor = Executors.newFixedThreadPool(30);
 		try {
-			logWriter = new PrintWriter(new File(CRAWLLOGPATH));
+			logWriter = new PrintWriter(new File(this.logPath));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -59,49 +38,38 @@ public class Crawler {
 	
 	public void crawl(){
 		
-		for (String string : startUrls) 
+		for (String string : startUrls)
 			scheduler.addUrl(string);
-		
-		int num_error = 0;
-		while(storage.numberOfArticles() < numberOfCrawllingDoc){
-			String url = scheduler.nextUrl();
-			Parser parser = new Parser(url);
-			Article article = null;
-			try{
-				article = parser.pars();
-				numCrawled ++;
-				storage.saveArticle(article);
-				int i = 0;
-				for (String string : article.getCitedInUrls()) {
-					scheduler.addUrl(string);
-					i++;
-					if(i == numberOfAddedUrl)
-						break;
-				}
-				i = 0;
-				for (String string : article.getRefrenceUrls()) {
-					scheduler.addUrl(string);
-					i++;
-					if(i == numberOfAddedUrl)
-						break;
-				}
-				log("Article " + numCrawled + " crawled!");
-				log(article.toString());
-			}catch(Exception e){
-				log("*************************************************error accured***************************************");
-				log("url is " + url);
-				for (StackTraceElement element : e.getStackTrace()) {
-					log(element.toString());
-				}
-				num_error ++;
+		 
+		while(this.numCrawled < numberOfCrawllingDoc){
+			if(scheduler.size() > 0){
+				String url = scheduler.nextUrl();
+				executor.execute(newCrawlWorker(url));
 			}
 		}
+		executor.shutdownNow();
 		System.out.println("Crawling ends successfully with " + num_error + " errors. " + numCrawled + " article was crawled! :)");
 	}
 	
-	private void log(String log){
+	protected abstract CrawlWorker newCrawlWorker(String url);
+
+	public abstract void successfulCrawl(Article article);
+	public abstract void unsuccessfulCrawl(String url, Exception e);
+	
+	protected void log(String log){
 		System.err.println(log);
-		logWriter.println(log);
+		synchronized (logWriter) {			
+			logWriter.println(log);
+		}
 	}
 
+	public int getNumberOfCrawllingDoc() {
+		return numberOfCrawllingDoc;
+	}
+
+	public int getNumCrawled() {
+		return numCrawled;
+	}
+	
+	
 }

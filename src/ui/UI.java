@@ -1,6 +1,9 @@
 package ui;
 
-import crawler.Crawler;
+import pagerank.ArticlePageRanker;
+import article.Article;
+import article.ArticleStorage;
+
 
 public class UI {
 	
@@ -9,8 +12,16 @@ public class UI {
 	public static void main(String[] args) {
 		if(DEBUG){
 		}else{
-			Crawler crawler = new Crawler();
-			crawler.crawl();
+			
+			ArticleStorage storage = new ArticleStorage("articles/");
+			Article[] articles = storage.getArticlesFromRepo();
+			ArticlePageRanker pageRanker = new ArticlePageRanker(articles);
+			ArticleStorage rankedStorage = new ArticleStorage("rankedarticles/");
+			pageRanker.pageRank(0.1, 0.000000001);
+			for (Article article : articles) {
+				rankedStorage.saveArticle(article);
+			}
+			
 		}
 	}
 }

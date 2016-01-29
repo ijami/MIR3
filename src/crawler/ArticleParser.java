@@ -19,7 +19,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-public class Parser {
+public class ArticleParser {
 
 	private static final int TIMEOUT = 30000;
 
@@ -27,7 +27,7 @@ public class Parser {
 	String url, baseUrl;
 	JsonArray citedInJsonArray, refrenceJsonArray;
 
-	public Parser(String url) {
+	public ArticleParser(String url) {
 		this.url = url;
 		String[] tmp = url.split("\\/");
 		this.baseUrl = tmp[0] + "//" + tmp[2] + "/";
@@ -46,7 +46,7 @@ public class Parser {
 							+ this.parsID()
 							+ "&showCitationsSorter=true&"
 							+ "showAbstract=true&showType=true&showPublicationPreview=true&"
-							+ "swapJournalAndAuthorPositions=false");
+							+ "swapJournalAndAuthorPositions=false&limit=100000");
 			httpGet.setHeaders(headers);
 			httpGet.setHeader("authority", "www.researchgate.net");
 			httpGet.setHeader("accept", "application/json");
@@ -84,7 +84,7 @@ public class Parser {
 							+ this.parsID() + "&showCitationsSorter=true&"
 							+ "showAbstract=true&showType=true&"
 							+ "showPublicationPreview=true&"
-							+ "swapJournalAndAuthorPositions=false");
+							+ "swapJournalAndAuthorPositions=false&limit=100000");
 			httpGet.setHeaders(headers);
 			httpGet.setHeader("authority", "www.researchgate.net");
 			httpGet.setHeader("accept", "application/json");
