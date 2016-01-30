@@ -323,27 +323,27 @@ class SearchButtonListener implements MouseListener {
 			index.setBounds(240, height + 30 * i, 150, 100);
 			JLabel title = new JLabel(article.getName());
 			title.setFont(new Font("Tahoma", 14, 15));
-			title.setBounds(340, height + 30 * i, 600, 100);
+			title.setBounds(340, height + 30 * i, 530, 100);
 			// JLabel author = new JLabel();
 			// author.setFont(new Font("Tahoma", 14, 15));
 			// author.setBounds(720, 300 + 30 * i, 150, 100);
-			// JLabel show = new JLabel("+Show");
-			// show.setFont(new Font("Tahoma", 14, 15));
-			// show.setBounds(880, 300 + 30 * i, 100, 100);
-			// show.setBackground(new Color(50, 50, 50));
-			// show.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			// show.addMouseListener(new ShowButtonListener(ui,
+			 JLabel show = new JLabel("PR:" + Double.toString(article.getPageRank()));
+			 show.setFont(new Font("Tahoma", 14, 15));
+			 show.setBounds(890, height + 30 * i, 220, 100);
+//			 show.setBackground(new Color(50, 50, 50));
+			 show.setVisible(true);
 			// Integer.parseInt(docu.get("id"))));
 			// ui.jlp.add(author, 3);
 			ui.jlp.add(id, 3);
 			ui.jlp.add(title, 3);
 			ui.jlp.add(index, 3);
-			// ui.jlp.add(show);
+			 ui.jlp.add(show, 3);
 			ui.jlp.setLayer(id, 2);
-			// ui.jlp.setLayer(author, 2);
+//			 ui.jlp.setLayer(author, 2);
 			ui.jlp.setLayer(index, 2);
 			ui.jlp.setLayer(title, 2);
-			// ui.jlp.setLayer(show, 2);
+			 ui.jlp.setLayer(show, 2);
+			ui.jlp.repaint();
 		}
 		ui.f.repaint();
 	}

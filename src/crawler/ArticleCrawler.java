@@ -12,6 +12,13 @@ public class ArticleCrawler extends Crawler {
 	private int indeg;
 	private int outdeg;
 	
+	private CrawlingStatusBar progressBar;
+	
+	public CrawlingStatusBar getProgressBar() {
+		return progressBar;
+	}
+
+	
 	private ArticleStorage storage;
 	
 	public void setStartUrls(){
@@ -44,43 +51,48 @@ public class ArticleCrawler extends Crawler {
 	}
 	
 	public ArticleCrawler(CrawlingStatusBar bar) {
-		super(defaultNumberOfCrawllingDoc, "article-crawler.log", bar);
+		super(defaultNumberOfCrawllingDoc, "article-crawler.log");
 		setStartUrls();
 		storage = new ArticleStorage(this.articlesFolderPath);
 		indeg = 10;
 		outdeg = 10;
+		this.progressBar = bar;
 	}
 	
 	public ArticleCrawler(int numberOfCrallingDoc, CrawlingStatusBar bar, int i, int o) {
-		super(numberOfCrallingDoc, "article-crawler.log", bar);
+		super(numberOfCrallingDoc, "article-crawler.log");
 		setStartUrls();
 		indeg = i;
 		outdeg = o;
 		storage = new ArticleStorage(this.articlesFolderPath);
+		this.progressBar = bar;
 	}
 	
 	public ArticleCrawler(String[] startUrls, CrawlingStatusBar bar) {
-		super(defaultNumberOfCrawllingDoc, "article-crawler.log", bar);
+		super(defaultNumberOfCrawllingDoc, "article-crawler.log");
 		this.startUrls = startUrls;
 		indeg = 10;
 		outdeg = 10;
 		storage = new ArticleStorage(this.articlesFolderPath);
+		this.progressBar = bar;
 	}
 	
 	public ArticleCrawler(String[] startUrls, int numberOfCrawllingDoc, CrawlingStatusBar bar) {
-		super(numberOfCrawllingDoc, "article-crawler.log", bar);
+		super(numberOfCrawllingDoc, "article-crawler.log");
 		this.startUrls = startUrls;
 		storage = new ArticleStorage(this.articlesFolderPath);
 		indeg = 10;
 		outdeg = 10;
+		this.progressBar = bar;
 	}
 
 	public ArticleCrawler(String[] startUrls, int numberOfCrawllingDoc, CrawlingStatusBar bar, int indeg, int outdeg) {
-		super(numberOfCrawllingDoc, "article-crawler.log", bar);
+		super(numberOfCrawllingDoc, "article-crawler.log");
 		this.startUrls = startUrls;
 		storage = new ArticleStorage(this.articlesFolderPath);
 		this.indeg = indeg;
 		this.outdeg = outdeg;
+		this.progressBar = bar;
 	}
 	
 	@Override

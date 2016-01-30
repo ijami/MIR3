@@ -72,7 +72,7 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 				startFrame.dispose();
-
+				new PagerankUI().gui();
 			}
 		});
 		bt3.addActionListener(new ActionListener() {

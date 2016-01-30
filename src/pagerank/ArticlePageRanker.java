@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import article.Article;
+import article.ArticleStorage;
+import ui.PagerankStatusBar;
 
 public class ArticlePageRanker {
 	
 	Article[] articles;
 	HashMap<Long, Integer> map;
+	PagerankStatusBar progressBar;
 	
-	public ArticlePageRanker(Article[] articles) {
+	public ArticlePageRanker(Article[] articles, PagerankStatusBar bar) {
 		this.articles = articles;
 		map = new HashMap<Long, Integer>();
+		progressBar = bar;
 	}
 	
 	public void pageRank(double alpha, double threashold){
@@ -35,6 +39,13 @@ public class ArticlePageRanker {
 		double[] ranks = pageRanker.pageRank(matrix, alpha, threashold);
 		for (int i = 0; i < ranks.length; i++)
 			articles[i].setPageRank(ranks[i]);
+		
+		ArticleStorage storate = new ArticleStorage("sag/");
+		for (int i = 0; i < articles.length; i++) {
+			storate.saveArticle(articles[i]);
+			progressBar.getProgressBar().setValue(100 * (i + 1) / s);
+			progressBar.getFrame().repaint();
+		}
 		
 	}
 

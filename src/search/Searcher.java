@@ -65,8 +65,8 @@ public class Searcher {
 		        .setTypes("article")
 		        .setSearchType(SearchType.DEFAULT)
 		        .setQuery(QueryBuilders.multiMatchQuery(query, 
-//		        		"name^" + nw
-//		        		,
+		        		"name^" + nw
+		        		,
 		        		"abstraction^" + abw
 		        		,
 		        		"authors^" + auw))// Query
@@ -93,7 +93,7 @@ public class Searcher {
 			Article a = temp.getArticleFromJson(arr[i].getSourceAsString());
 			pairs[i] = new ArticlePair(a, 
 					(double) arr[i].getScore() *
-					(2 + a.getPageRank())
+					(a.getPageRank())
 					);
 		}
 		Arrays.sort(pairs);

@@ -21,19 +21,13 @@ public abstract class Crawler {
 	private ExecutorService executor;
 	protected int numCrawled = 0;
 	protected int num_error = 0;
-	private CrawlingStatusBar progressBar;
-	
-	public CrawlingStatusBar getProgressBar() {
-		return progressBar;
-	}
 	
 	
 	
-	public Crawler(int numberOfCrawllingDoc, String logPath, CrawlingStatusBar bar) {
+	public Crawler(int numberOfCrawllingDoc, String logPath) {
 		scheduler = new Scheduler();
 		this.logPath = logPath;
 		this.numberOfCrawllingDoc = numberOfCrawllingDoc;
-		this.progressBar = bar;
 		numCrawled = 0;
 		executor = Executors.newFixedThreadPool(15);
 		try {
@@ -56,8 +50,6 @@ public abstract class Crawler {
 				String url = scheduler.nextUrl();
 				executor.execute(newCrawlWorker(url));
 			}
-			System.err.println(s);
-			s = 1202;
 		}
 		executor.shutdownNow();
 		System.out.println("Crawling ends successfully with " + num_error + " errors. " + numCrawled + " article was crawled! :)");

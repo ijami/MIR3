@@ -16,8 +16,8 @@ public class UI {
 			Crawler crawler = new AuthorCrawler();
 			crawler.crawl();
 		}else{	
-			Crawler artiCrawler = new ArticleCrawler();
-			artiCrawler.crawl();
+//			Crawler artiCrawler = new ArticleCrawler();
+//			artiCrawler.crawl();
 			
 		}
 	}

@@ -2,6 +2,7 @@ package crawler;
 
 import author.Author;
 import author.AuthorStorage;
+import ui.AuthorCrawlerStatusBar;
 
 
 public class AuthorCrawler extends Crawler{
@@ -9,6 +10,10 @@ public class AuthorCrawler extends Crawler{
 	private final static String defaultFolderPath = "authors/";
 	private final static String logPath = "author-crawler.log";
 	private final static int defaultNumberOfCrawlingAuthors = 100;
+	
+	int indeg;
+	int outdeg;
+	AuthorCrawlerStatusBar progressBar;
 
 	private AuthorStorage storage;
 	public void setStartUrl(){
@@ -22,16 +27,22 @@ public class AuthorCrawler extends Crawler{
 		storage = new AuthorStorage(defaultFolderPath);
 	}
 	
-	public AuthorCrawler(String[] start){
-		super(defaultNumberOfCrawlingAuthors, logPath);
+	public AuthorCrawler(String[] start, int numberOfCrawllingDoc, AuthorCrawlerStatusBar bar, int i, int o){
+		super(numberOfCrawllingDoc, logPath);
 		startUrls = start;
 		storage = new AuthorStorage(defaultFolderPath);
+		indeg = i;
+		outdeg = o;
+		progressBar = bar;
 	}
 
-	public AuthorCrawler(int numberOfCrawllingDoc) {
+	public AuthorCrawler(int numberOfCrawllingDoc, AuthorCrawlerStatusBar bar, int i, int o) {
 		super(numberOfCrawllingDoc, logPath);
 		setStartUrl();
+		indeg = i;
+		outdeg = o;
 		storage = new AuthorStorage(defaultFolderPath);
+		progressBar = bar;
 	}
 	
 	public AuthorCrawler(int numberOfCrawllingDoc, String[] start) {
@@ -52,6 +63,8 @@ public class AuthorCrawler extends Crawler{
 		if(storage.numberOfAuthors() >= numberOfCrawllingDoc)
 			return;
 		numCrawled ++;
+		progressBar.getProgressBar().setValue(100 * numCrawled / numberOfCrawllingDoc);
+		progressBar.getFrame().repaint();
 		storage.saveAuthor(author);
 		for (String string : author.getNextUrls()) {
 			scheduler.addUrl(string);

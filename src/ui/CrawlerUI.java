@@ -32,6 +32,7 @@ public class CrawlerUI {
 	JLabel jl;
 	JButton home;
 	JButton crawl;
+	JButton authorsCrawl;
 	Color optionColor = new Color(100, 100, 200);
 
 	int settingsH = 270;
@@ -47,6 +48,7 @@ public class CrawlerUI {
 		setLogo();
 		setHomeButton();
 		setCrawlButton();
+		setAuthorsCrawlButton();
 		frameRepaint();
 	}
 
@@ -195,12 +197,22 @@ public class CrawlerUI {
 	
 	public void setCrawlButton () {
 		crawl = new JButton("CRAWL IT!");
-		crawl.setBounds(350, 240, 640, 40);
-		crawl.setBackground(new Color(200, 160, 230));
+		crawl.setBounds(200, 240, 790, 40);
+		crawl.setBackground(Color.BLUE);
 		crawl.setFont(new Font("Tahoma", 15, 16));
 		crawl.addMouseListener(new CrawlButtonListener(crawl, urls, number, indegtext, outdegtext));
 		jlp.add(crawl, new Integer(2));
 	}
+	
+	public void setAuthorsCrawlButton () {
+		authorsCrawl = new JButton("CRAWL AUTHORS!");
+		authorsCrawl.setBounds(200, 290, 790, 40);
+		authorsCrawl.setBackground(Color.RED);
+		authorsCrawl.setFont(new Font("Tahoma", 15, 16));
+		authorsCrawl.addMouseListener(new CrawlAuthorsButtonListener(crawl, urls, number, indegtext, outdegtext));
+		jlp.add(authorsCrawl, new Integer(2));
+	}
+	
 
 	private void setLogo() {
 		jl = new JLabel(new ImageIcon("google - Copy.png"));
@@ -258,7 +270,54 @@ class CrawlButtonListener implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		jb.setText("Search");
+		jb.setText("CRAWL IT!");
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+	}
+
+}
+
+
+class CrawlAuthorsButtonListener implements MouseListener {
+
+	JButton jb;
+	JTextField urls;
+	JTextField number;
+	JTextField ind;
+	JTextField outd;
+
+	public CrawlAuthorsButtonListener(JButton jbb, JTextField jtff1, JTextField jtff2, 
+			JTextField jtff3, JTextField jtff4) {
+		jb = jbb;
+		urls = jtff1;
+		number = jtff2;
+		ind = jtff3;
+		outd = jtff4;
+	}
+
+	int height = 220;
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		AuthorCrawlerStatusBar progressBar = new AuthorCrawlerStatusBar("Authors Crawling", 
+				Integer.parseInt(number.getText()), urls.getText(), 
+				Integer.parseInt(ind.getText()), Integer.parseInt(outd.getText()));
+		progressBar.start();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		jb.setText("CRAWL AUTHORS!");
 	}
 
 	@Override
