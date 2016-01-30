@@ -2,6 +2,8 @@ package article;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+
 public class Article {
 	
 	
@@ -121,6 +123,11 @@ public class Article {
 		this.pageRank = pageRank;
 	}
 
+	public Article getArticleFromJson(String json){
+		Gson gson = new Gson();
+		Article article = gson.fromJson(json, Article.class);
+		return article;
+	}
 
 
 	@Override

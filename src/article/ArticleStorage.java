@@ -1,8 +1,13 @@
 package article;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
+
 import com.google.gson.Gson;
 
 public class ArticleStorage {
@@ -33,13 +38,13 @@ public class ArticleStorage {
 		}
 	}
 
-	private String getJson(Article article){
+	public String getJson(Article article){
 		Gson gson = new Gson();
 		String serializedArticle = gson.toJson(article);
 		return serializedArticle;
 	}
 
-	private Article getArticleFromJson(String json){
+	public Article getArticleFromJson(String json){
 		Gson gson = new Gson();
 		Article article = gson.fromJson(json, Article.class);
 		return article;
@@ -52,14 +57,15 @@ public class ArticleStorage {
 	public Article[] getArticlesFromRepo(){
 		File[] files = articleFolder.listFiles();
 		articleRepo = new Article[files.length];
+		BufferedReader inp;
+		String json = null;
 		for (int i = 0; i < files.length; i ++) {
-			Scanner inp = null;
 			try {
-				inp = new Scanner(files[i]);
-			} catch (FileNotFoundException e) {
+				inp = new BufferedReader(new FileReader(files[i]));
+				json = inp.readLine();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			String json = inp.nextLine();
 			articleRepo[i] = getArticleFromJson(json);
 		}
 		return articleRepo;

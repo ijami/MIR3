@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import article.Article;
+import ui.CrawlingStatusBar;
 
 public abstract class Crawler {
 	
@@ -20,13 +21,19 @@ public abstract class Crawler {
 	private ExecutorService executor;
 	protected int numCrawled = 0;
 	protected int num_error = 0;
+	private CrawlingStatusBar progressBar;
+	
+	public CrawlingStatusBar getProgressBar() {
+		return progressBar;
+	}
 	
 	
-	public Crawler(int numberOfCrawllingDoc, String logPath) {
+	
+	public Crawler(int numberOfCrawllingDoc, String logPath, CrawlingStatusBar bar) {
 		scheduler = new Scheduler();
 		this.logPath = logPath;
 		this.numberOfCrawllingDoc = numberOfCrawllingDoc;
-		
+		this.progressBar = bar;
 		numCrawled = 0;
 		executor = Executors.newFixedThreadPool(30);
 		try {
@@ -42,10 +49,15 @@ public abstract class Crawler {
 			scheduler.addUrl(string);
 		 
 		while(this.numCrawled < numberOfCrawllingDoc){
-			if(scheduler.size() > 0){
+			int s = scheduler.size();
+			if(s > 0){
+				System.err.println("hastam");
+				System.err.println(numCrawled + " " + scheduler.size());
 				String url = scheduler.nextUrl();
 				executor.execute(newCrawlWorker(url));
 			}
+			System.err.println(s);
+			s = 1202;
 		}
 		executor.shutdownNow();
 		System.out.println("Crawling ends successfully with " + num_error + " errors. " + numCrawled + " article was crawled! :)");

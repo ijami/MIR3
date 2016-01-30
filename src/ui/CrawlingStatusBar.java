@@ -6,11 +6,11 @@ import java.awt.Container;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.border.Border;
 
-public class StatusBar extends Thread {
+import crawler.ArticleCrawler;
+
+public class CrawlingStatusBar extends Thread {
 
 	private int total;
 	private int counter;
@@ -19,6 +19,11 @@ public class StatusBar extends Thread {
 	private JProgressBar progressBar;
 	private final int width = 500;
 	private final int height = 100;
+	String folder;
+	
+	int indeg;
+	int outdeg;
+	String urls;
 	
 	public int getCounter() {
 		return counter;
@@ -36,8 +41,11 @@ public class StatusBar extends Thread {
 		this.total = total;
 	}
 	
-	public StatusBar(String name, int total) {
+	public CrawlingStatusBar(String name, int total, String u, int ind, int outd) {
 		this.total = total;
+		indeg = ind;
+		outdeg = outd;
+		urls = u;
 		counter = 0;
 		frame = new JFrame(name);
 	    frame.setSize(width, height);
@@ -57,6 +65,9 @@ public class StatusBar extends Thread {
 	    frame.setVisible(true);
 	}
 	
+	public JProgressBar getProgressBar() {
+		return progressBar;
+	}
 	
 	public void progress() {
 		counter ++;
@@ -64,42 +75,29 @@ public class StatusBar extends Thread {
 	
 	@Override
 	public void run() {
-		this.paint();
-		System.out.println(total);
-		while (counter < total) {
-			System.out.println("counter = " + counter);
-			System.out.println("prog = " + progressBar.getValue());
-			SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                	new SwingWorker<Void,Void>() {
-                		   protected Void doInBackground() throws Exception {
-                		   progressBar.setValue(100 * counter / total);
-                		   return null;
-                		 };
-                		 }.execute();                }
-              });
-			frame.repaint();
-			try {
-				Thread.sleep(30);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		ArticleCrawler ac = null;
+		if (urls.isEmpty()) {
+			ac = new ArticleCrawler(total, this, indeg, outdeg);
 		}
-		frame.dispose();
+		else {
+			String[] uarelz = urls.split(",");
+			ac = new ArticleCrawler(uarelz, total, this, indeg, outdeg);
+		}
+		paint();
+		ac.crawl();
 	}
 
 	public static void main(String[] args) throws InterruptedException {
 		JFrame jf = new JFrame("dare dahane ehsan");
 		jf.setVisible(true);
 		jf.repaint();
-		StatusBar sb = new StatusBar("indexing", 0);
-		sb.setTotal(140);
-		sb.start();
-		for (int i = 0; i < 140; i++) {
-			sb.progress();
-			Thread.sleep(100);
-		}
+//		IndexingStatusBar sb = new IndexingStatusBar("indexing", 0);
+//		sb.setTotal(140);
+//		sb.start();
+//		for (int i = 0; i < 140; i++) {
+//			sb.progress();
+//			Thread.sleep(100);
+//		}
 	}
 	
 }

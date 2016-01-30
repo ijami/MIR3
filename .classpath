@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-<<<<<<< HEAD
+	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/jsoup/jsoup-1.8.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/jsoup/jsoup-1.8.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/gson/gson-2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/gson/gson-2.5-javadoc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/apache httpClient/httpcomponents-client-4.5.1/lib/commons-codec-1.9.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/apache httpClient/httpcomponents-client-4.5.1/lib/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/apache httpClient/httpcomponents-client-4.5.1/lib/fluent-hc-4.5.1.jar"/>
@@ -13,10 +15,8 @@
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/apache httpClient/httpcomponents-client-4.5.1/lib/httpmime-4.5.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/apache httpClient/httpcomponents-client-4.5.1/lib/jna-4.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/apache httpClient/httpcomponents-client-4.5.1/lib/jna-platform-4.1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/gson/gson-2.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/gson/gson-2.5-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/jsoup/jsoup-1.8.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/jsoup/jsoup-1.8.3-javadoc.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/rafie/workspace/commons-io-2.4/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/lib/elasticsearch-2.1.1/lib/antlr-runtime-3.5.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/lib/elasticsearch-2.1.1/lib/apache-log4j-extras-1.2.17.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/lib/elasticsearch-2.1.1/lib/asm-4.1.jar"/>
@@ -58,33 +58,6 @@
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/lib/elasticsearch-2.1.1/lib/snakeyaml-1.15.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/lib/elasticsearch-2.1.1/lib/spatial4j-0.5.jar"/>
 	<classpathentry kind="lib" path="C:/Users/rafie/workspace/lib/elasticsearch-2.1.1/lib/t-digest-3.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rafie/workspace/Latif/lib/prompt.jar"/>
-=======
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/jsoup/jsoup-1.8.3.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/Iman/Documents/My%20Documents/University/Term7/MIR/project/phase3/libs/jsoup/jsoup-1.8.3-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/commons-codec-1.9.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/fluent-hc-4.5.1.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/httpclient-4.5.1.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/httpclient-cache-4.5.1.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/httpclient-win-4.5.1.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/httpcore-4.4.3.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/httpmime-4.5.1.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/jna-4.1.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/apache httpClient/httpcomponents-client-4.5.1/lib/jna-platform-4.1.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/gson/gson-2.5.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/Iman/Documents/My%20Documents/University/Term7/MIR/project/phase3/libs/gson/gson-2.5-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/Users/Iman/Documents/My Documents/University/Term7/MIR/project/phase3/libs/commons-math3-3.6/commons-math3-3.6.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/Iman/Documents/My%20Documents/University/Term7/MIR/project/phase3/libs/commons-math3-3.6/commons-math3-3.6-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
->>>>>>> 1c623d65ae83c88decb03801a814a60d31d87b8f
+	<classpathentry kind="lib" path="C:/Users/rafie/workspace/libs/commons-math3-3.6/commons-math3-3.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -2,12 +2,15 @@ package crawler;
 
 import article.Article;
 import article.ArticleStorage;
+import ui.CrawlingStatusBar;
 
 public class ArticleCrawler extends Crawler {
 	
 	private static final int defaultNumberOfCrawllingDoc = 1000;
-	private final int numberOfAddedUrl = 10;
+//	private final int numberOfAddedUrl = 10;
 	private final String articlesFolderPath = "articles/";
+	private int indeg;
+	private int outdeg;
 	
 	private ArticleStorage storage;
 	
@@ -40,49 +43,72 @@ public class ArticleCrawler extends Crawler {
 				+ "277959103_Dropout_as_a_Bayesian_Approximation_Appendix?ev=auth_pub";
 	}
 	
-	public ArticleCrawler() {
-		super(defaultNumberOfCrawllingDoc, "article-crawler.log");
+	public ArticleCrawler(CrawlingStatusBar bar) {
+		super(defaultNumberOfCrawllingDoc, "article-crawler.log", bar);
 		setStartUrls();
 		storage = new ArticleStorage(this.articlesFolderPath);
+		indeg = 10;
+		outdeg = 10;
 	}
 	
-	public ArticleCrawler(int numberOfCrallingDoc) {
-		super(numberOfCrallingDoc, "article-crawler.log");
+	public ArticleCrawler(int numberOfCrallingDoc, CrawlingStatusBar bar, int i, int o) {
+		super(numberOfCrallingDoc, "article-crawler.log", bar);
 		setStartUrls();
+		indeg = i;
+		outdeg = o;
 		storage = new ArticleStorage(this.articlesFolderPath);
 	}
 	
-	public ArticleCrawler(String[] startUrls) {
-		super(defaultNumberOfCrawllingDoc, "article-crawler.log");
+	public ArticleCrawler(String[] startUrls, CrawlingStatusBar bar) {
+		super(defaultNumberOfCrawllingDoc, "article-crawler.log", bar);
 		this.startUrls = startUrls;
+		indeg = 10;
+		outdeg = 10;
 		storage = new ArticleStorage(this.articlesFolderPath);
 	}
 	
-	public ArticleCrawler(String[] startUrls, int numberOfCrawllingDoc) {
-		super(numberOfCrawllingDoc, "article-crawler.log");
+	public ArticleCrawler(String[] startUrls, int numberOfCrawllingDoc, CrawlingStatusBar bar) {
+		super(numberOfCrawllingDoc, "article-crawler.log", bar);
 		this.startUrls = startUrls;
 		storage = new ArticleStorage(this.articlesFolderPath);
+		indeg = 10;
+		outdeg = 10;
 	}
 
+	public ArticleCrawler(String[] startUrls, int numberOfCrawllingDoc, CrawlingStatusBar bar, int indeg, int outdeg) {
+		super(numberOfCrawllingDoc, "article-crawler.log", bar);
+		this.startUrls = startUrls;
+		storage = new ArticleStorage(this.articlesFolderPath);
+		this.indeg = indeg;
+		this.outdeg = outdeg;
+	}
+	
 	@Override
 	synchronized public void successfulCrawl(Article article) {
 		if(storage.numberOfArticles() >= this.numberOfCrawllingDoc)
 			return;
 		
 		numCrawled ++;
+		this.getProgressBar().getProgressBar().setValue(100 * numCrawled / numberOfCrawllingDoc);
+		this.getProgressBar().getFrame().repaint();
 		storage.saveArticle(article);
 		int i = 0;
+		System.err.println(article.getId() + " size is " + article.getCitedInUrls().size());
 		for (String string : article.getCitedInUrls()) {
+			System.err.println("salam man injam " + i + indeg);
 			scheduler.addUrl(string);
 			i++;
-			if(i == numberOfAddedUrl)
+			if(i == indeg)
 				break;
 		}
 		i = 0;
+		System.err.println(article.getId() + " size is " + article.getRefrenceUrls().size());
 		for (String string : article.getRefrenceUrls()) {
+			System.err.println("salam man injam " + i + indeg);
 			scheduler.addUrl(string);
+			System.err.println(scheduler.size());
 			i++;
-			if(i == numberOfAddedUrl)
+			if(i == outdeg)
 				break;
 		}
 		log("Article " + numCrawled + " crawled!");

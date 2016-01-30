@@ -3,14 +3,16 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.net.UnknownHostException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.border.Border;
 
-public class StatusBar extends Thread {
+import search.Indexer;
+
+public class IndexingStatusBar extends Thread {
 
 	private int total;
 	private int counter;
@@ -19,6 +21,7 @@ public class StatusBar extends Thread {
 	private JProgressBar progressBar;
 	private final int width = 500;
 	private final int height = 100;
+	String folder;
 	
 	public int getCounter() {
 		return counter;
@@ -36,13 +39,14 @@ public class StatusBar extends Thread {
 		this.total = total;
 	}
 	
-	public StatusBar(String name, int total) {
+	public IndexingStatusBar(String name, int total, String path) {
 		this.total = total;
 		counter = 0;
 		frame = new JFrame(name);
 	    frame.setSize(width, height);
 	    frame.setLocationRelativeTo(null);
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    folder = path;
 	}
 	
 	public void paint() {
@@ -57,6 +61,9 @@ public class StatusBar extends Thread {
 	    frame.setVisible(true);
 	}
 	
+	public JProgressBar getProgressBar() {
+		return progressBar;
+	}
 	
 	public void progress() {
 		counter ++;
@@ -66,26 +73,14 @@ public class StatusBar extends Thread {
 	public void run() {
 		this.paint();
 		System.out.println(total);
-		while (counter < total) {
-			System.out.println("counter = " + counter);
-			System.out.println("prog = " + progressBar.getValue());
-			SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                	new SwingWorker<Void,Void>() {
-                		   protected Void doInBackground() throws Exception {
-                		   progressBar.setValue(100 * counter / total);
-                		   return null;
-                		 };
-                		 }.execute();                }
-              });
-			frame.repaint();
-			try {
-				Thread.sleep(30);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		Indexer indexer = new Indexer();
+		try {
+			indexer.clientStartUp(null);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		indexer.indexCorpus(folder, this);
 		frame.dispose();
 	}
 
@@ -93,13 +88,13 @@ public class StatusBar extends Thread {
 		JFrame jf = new JFrame("dare dahane ehsan");
 		jf.setVisible(true);
 		jf.repaint();
-		StatusBar sb = new StatusBar("indexing", 0);
-		sb.setTotal(140);
-		sb.start();
-		for (int i = 0; i < 140; i++) {
-			sb.progress();
-			Thread.sleep(100);
-		}
+//		IndexingStatusBar sb = new IndexingStatusBar("indexing", 0);
+//		sb.setTotal(140);
+//		sb.start();
+//		for (int i = 0; i < 140; i++) {
+//			sb.progress();
+//			Thread.sleep(100);
+//		}
 	}
 	
 }

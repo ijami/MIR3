@@ -1,8 +1,5 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,11 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderImage;
 
 public class GUI {
     
@@ -73,6 +65,7 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 				startFrame.dispose();
+				new CrawlerUI().gui();
 			}
 		});
 		bt2.addActionListener(new ActionListener() {
@@ -86,6 +79,7 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 				startFrame.dispose();
+				new SearchUI().gui();
 			}
 		});
 		bt4.addActionListener(new ActionListener() {
