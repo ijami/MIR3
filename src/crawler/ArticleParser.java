@@ -200,6 +200,7 @@ public class ArticleParser {
 
 		Article article = new Article();
 
+		article.setUrl(url);
 		article.setId(parsID());
 		article.setName(parsName());
 		article.setAuthors(parsAuthors());
@@ -227,8 +228,6 @@ public class ArticleParser {
 		Elements titles = null;
 		if (doc.getElementsByClass("pub-title").size() > 0)
 			titles = doc.getElementsByClass("pub-title");
-		if (doc.getElementsByClass("publication-title").size() > 0)
-			titles = doc.getElementsByClass("publication-title");
 		return titles.get(0).text();
 	}
 

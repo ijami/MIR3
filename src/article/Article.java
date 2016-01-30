@@ -134,13 +134,15 @@ public class Article {
 	public String toString() {
 		String ans = "";
 		ans += "ID: " + this.id + "\n";
+		ans += "Url: " + this.url + "\n";
 		ans += "Name: " + this.name + "\n"; 
 		ans += "Abstract: " + this.abstraction + "\n";
 		ans += "Authors: " + this.authors + "\n";
 		ans += "CitedIn Articles ID: " + this.citedInIDs + "\n";
 		ans += "CitedIn Articles Url: " + this.citedInUrls + "\n";
 		ans += "Refrences ID: " + this.refrenceIDs + "\n";
-		ans += "Refrences Url: " + this.refrenceUrls;
+		ans += "Refrences Url: " + this.refrenceUrls + "\n";
+		ans += "Pagerank: " + this.pageRank;
 		return ans;
 	}
 	

@@ -1,26 +1,23 @@
 package ui;
 
-import pagerank.ArticlePageRanker;
-import article.Article;
-import article.ArticleStorage;
+import author.Author;
+import crawler.ArticleCrawler;
+import crawler.AuthorCrawler;
+import crawler.AuthorParser;
+import crawler.Crawler;
 
 
 public class UI {
 	
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 
 	public static void main(String[] args) {
 		if(DEBUG){
-		}else{
-			
-			ArticleStorage storage = new ArticleStorage("articles/");
-			Article[] articles = storage.getArticlesFromRepo();
-			ArticlePageRanker pageRanker = new ArticlePageRanker(articles);
-			ArticleStorage rankedStorage = new ArticleStorage("rankedarticles/");
-			pageRanker.pageRank(0.1, 0.000000001);
-			for (Article article : articles) {
-				rankedStorage.saveArticle(article);
-			}
+			Crawler crawler = new AuthorCrawler();
+			crawler.crawl();
+		}else{	
+			Crawler artiCrawler = new ArticleCrawler();
+			artiCrawler.crawl();
 			
 		}
 	}

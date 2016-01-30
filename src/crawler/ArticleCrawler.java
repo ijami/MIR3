@@ -84,7 +84,8 @@ public class ArticleCrawler extends Crawler {
 	}
 	
 	@Override
-	synchronized public void successfulCrawl(Article article) {
+	synchronized public void successfulCrawl(Object article1) {
+		Article article = (Article) article1;
 		if(storage.numberOfArticles() >= this.numberOfCrawllingDoc)
 			return;
 		

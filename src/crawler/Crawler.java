@@ -35,7 +35,7 @@ public abstract class Crawler {
 		this.numberOfCrawllingDoc = numberOfCrawllingDoc;
 		this.progressBar = bar;
 		numCrawled = 0;
-		executor = Executors.newFixedThreadPool(30);
+		executor = Executors.newFixedThreadPool(15);
 		try {
 			logWriter = new PrintWriter(new File(this.logPath));
 		} catch (FileNotFoundException e) {
@@ -65,7 +65,7 @@ public abstract class Crawler {
 	
 	protected abstract CrawlWorker newCrawlWorker(String url);
 
-	public abstract void successfulCrawl(Article article);
+	public abstract void successfulCrawl(Object obj);
 	public abstract void unsuccessfulCrawl(String url, Exception e);
 	
 	protected void log(String log){
